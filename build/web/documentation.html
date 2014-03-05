@@ -1,0 +1,249 @@
+<html>
+<head>
+<title>Documentation</title>
+</head>
+<body>
+<h1>PROJECT DOCUMENTATION</h1>
+
+<p>by: Data Miners</p>
+
+
+<br />
+<h2>ER - Diagram</h2>
+<p>Kalon Cheong, Jacky Liang, Akbar Hirani</p>
+
+<br />
+<p><a href="/Facebook/FinalER.jpg"><img style="width:1000px; length:450px;" src="/Facebook/FinalER.jpg"/></a>
+</p>
+
+<br />
+<h2>Lucid description of the relational database scheme of the social networking site database, including a discussion of the reasoning behind your design decisions. Make clear how your design supports efficient query processing.</h2>
+
+<br />
+<p>Our database is decomposed into many different tables. There are roles for the person, there are employees, managers, and users. The employees and manager share the person table because we care for the SSN of the employees and managers. But the users, we don�t need the SSN because it is a sensitive piece of information. There is no need to have the attributes of person in both tables. We relate them by SSN. Also, we have circle table that maintains the owner of the circle. We have separate tables because circles have pages have posts have comments. We can relate these by using the ID keys in each of the tables. There is a circle join requests table to maintain the requests when a user wants to join a circle.</p>
+
+<p><br />
+There is also messages table for the users to relay messages to each other. We needed to add tables to keep track of who liked what posts and comments as well, because it would be extra redundant to have the likes on the same table as the posts/comments. There is also an advertisement table to keep the items being sold on the site. And the purchases table to keep track of the transactions by the user. It was necessary to put accounts since users may have different credit card numbers. Joining on these tables is easy through the ID�s but we try not to join on full tables but on reduced tables. And it is easy to reduce on tables if they contain modular information. </p>
+
+<br />
+<h2>A list of all functional dependencies in the relational database scheme</h2>
+
+<br />
+<p>Advertisement_Id -&gt; Employee_Id , every advertisement only has one Employee working on it</p>
+
+<p>Advertisement_Id -&gt; Type , every ad only has one type</p>
+
+<p>Circle_Id -&gt; Owner_Of_Circle, every circle has only one owner</p>
+
+<p>Circle_Id -&gt; Type , every circle only has one type</p>
+
+<p>Account_Number -&gt; User_Id , every account only has one owner</p>
+
+<p>Account_Number -&gt; {Date, Credit_Card_Number} , every account number uniquely related to a credit card number and date it was created </p>
+
+<p>Comment_Id -&gt; Post_Id , every comment only has one post related to it</p>
+
+<p>Post_Id -&gt; Circle_Id , every post only has one circle associated with it</p>
+
+<p>Page -&gt; Circle and Circle -&gt; Page , every page has one circle and same goes with the circle to page</p>
+
+<p>SSN -&gt; Manager_Id , a person can only have one manager account</p>
+
+<p>SSN -&gt; Employee_Id , a person can only have one employee account</p>
+
+<p>SSN -&gt; {First_Name, Last_Name, Address, State, City, Zip_Code, Telephone}, SSN defines a person</p>
+
+<p>Transaction_Id -&gt; {Advertisement, User, Account} , each transaction tied to a user and account</p>
+
+<p>User_Id -&gt; {First_Name, Last_Name, Address, State, City, Zip_Code, Telephone}, User_Id uniquely defines a USER</p>
+
+<br />
+<br />
+<br />
+<h2>Description of integrity constraints, including referential integrity</h2>
+
+<br />
+<p>(NN)* refers to value being Not Null</p>
+
+<table style="border: 1px solid black;">
+<colgroup><col ><col ><col ><col ></colgroup>
+<tbody>
+<tr>
+<td><p>Tables</p></td>
+<td><p>Primary Key</p></td>
+<td><p>Foreign Key</p></td>
+<td><p>Unique</p></td>
+</tr>
+
+<tr>
+<td><p>account</p></td>
+<td><p>Account Number (NN)</p></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td><p>addedto</p></td>
+<td><p>User_Id (NN)</p>
+
+<p>Circle_Id (NN)</p></td>
+<td><p>User_Id (NN)</p>
+
+<p>Circle_Id (NN)</p></td>
+<td></td>
+</tr>
+
+<tr>
+<td><p>advertisement</p></td>
+<td><p>Advertisement (NN)</p></td>
+<td><p>Employee</p></td>
+<td></td>
+</tr>
+
+<tr>
+<td><p>circle</p></td>
+<td><p>Circle_Id (NN)</p></td>
+<td><p>Owner_of_Circle</p></td>
+<td></td>
+</tr>
+
+<tr>
+<td><p>circle_join_</p>
+
+<p>requests</p></td>
+<td><p>Circle_Id (NN)</p>
+
+<p>User_Id (NN)</p></td>
+<td><p>Circle_Id (NN)</p>
+
+<p>User_Id (NN)</p></td>
+<td></td>
+</tr>
+
+<tr>
+<td><p>comment</p></td>
+<td><p>Comment_Id (NN)</p></td>
+<td><p>Post</p>
+
+<p>Author</p></td>
+<td></td>
+</tr>
+
+<tr>
+<td><p>employee</p></td>
+<td><p>Employee_Id (NN)</p></td>
+<td><p>SSN (NN)</p></td>
+<td><p>SSN (NN)</p></td>
+</tr>
+
+<tr>
+<td><p>manager</p></td>
+<td><p>ManagerId (NN)</p></td>
+<td><p>SSN (NN)</p></td>
+<td><p>SSN (NN)</p></td>
+</tr>
+
+<tr>
+<td><p>message</p></td>
+<td><p>Message_Id (NN)</p></td>
+<td><p>Sender</p>
+
+<p>Recevier</p></td>
+<td></td>
+</tr>
+
+<tr>
+<td><p>page</p></td>
+<td><p>Page_Id (NN)</p></td>
+<td><p>Associated_circle_ID (NN)</p></td>
+<td></td>
+</tr>
+
+<tr>
+<td><p>person</p></td>
+<td><p>SSN (NN)</p></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td><p>post</p></td>
+<td><p>Post_Id (NN)</p></td>
+<td><p>Page</p>
+
+<p>Author</p></td>
+<td></td>
+</tr>
+
+<tr>
+<td><p>purchase</p></td>
+<td><p>Transaction_Id (NN)</p></td>
+<td><p>Advertisement</p>
+
+<p>User</p>
+
+<p>Account</p></td>
+<td></td>
+</tr>
+
+<tr>
+<td><p>user</p></td>
+<td><p>User_Id (NN)</p></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td><p>user_has_</p>
+
+<p>account</p></td>
+<td><p>User_Id (NN)</p>
+
+<p>Account_Number(NN)</p></td>
+<td><p>User_Id (NN)</p>
+
+<p>Account_Number(NN)</p></td>
+<td></td>
+</tr>
+
+<tr>
+<td><p>user_likes_</p>
+
+<p>comment</p></td>
+<td><p>User (NN)</p>
+
+<p>Comment (NN)</p></td>
+<td><p>User (NN)</p>
+
+<p>Comment (NN)</p></td>
+<td></td>
+</tr>
+
+<tr>
+<td><p>user_likes_</p>
+
+<p>post</p></td>
+<td><p>User (NN)</p>
+
+<p>Post (NN)</p></td>
+<td><p>User (NN)</p>
+
+<p>Post (NN)</p></td>
+<td></td>
+</tr>
+
+<tr>
+<td><p>user_</p>
+
+<p>preferences</p></td>
+<td><p>Id (NN)</p>
+
+<p>Preference (NN)</p></td>
+<td><p>Id (NN)</p></td>
+<td></td>
+</tr>
+
+</tbody>
+</table>
+</body>
+</html>
